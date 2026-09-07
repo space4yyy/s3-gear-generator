@@ -1,0 +1,2 @@
+NXAPI_AUTH_CLIENT_ID=replace-with-your-nxapi-client-id
+FLOW_SECRET=replace-with-a-long-random-secret

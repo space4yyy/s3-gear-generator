@@ -1,0 +1,11 @@
+.DS_Store
+
+# Local secrets
+.dev.vars
+
+# Wrangler and Node generated files
+.wrangler/
+node_modules/
+
+# Local output
+gear_*.json

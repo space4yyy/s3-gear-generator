@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#09090b" />
+    <title>Splatoon3 GEAR GENERATOR</title>
+    <link rel="preload" href="/assets/fonts/DFP_GBZY7.ttf?v=4" as="font" type="font/ttf" crossorigin />
+    <link rel="stylesheet" href="/styles.css?v=34" />
+  </head>
+  <body>
+    <main class="app-shell" aria-live="polite">
+      <div class="ink-cloud ink-cloud-left" aria-hidden="true"></div>
+      <div class="ink-cloud ink-cloud-right" aria-hidden="true"></div>
+
+      <section class="game-card" id="game-card">
+        <div class="card-tape card-tape-left" aria-hidden="true"></div>
+        <div class="card-tape card-tape-right" aria-hidden="true"></div>
+
+        <div class="card-content" id="card-content"></div>
+      </section>
+
+      <p class="footer-note">
+        <span id="footer-summary"></span>
+        <span class="footer-meta"><span id="footer-author-label"></span><a class="author-name" href="https://www.xiaohongshu.com/user/profile/5992626450c4b43524883ef8" target="_blank" rel="noopener noreferrer">xhs@space4</a> · <a id="footer-github" href="https://github.com/space4yyy/s3s" target="_blank" rel="noopener noreferrer"></a> · <button type="button" class="language-toggle" id="language-toggle"></button></span>
+      </p>
+    </main>
+
+    <aside class="preview-switcher" id="preview-switcher" hidden>
+      <span class="preview-label" id="preview-label">页面预览</span>
+      <button type="button" id="preview-prev">上一个</button>
+      <button type="button" id="preview-next">下一个</button>
+    </aside>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="config.js"></script>
+    <script src="app.js?v=i18n-3"></script>
+  </body>
+</html>
