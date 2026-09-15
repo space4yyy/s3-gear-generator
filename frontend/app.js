@@ -71,9 +71,9 @@
       back: "返回上一步",
       step2: "STEP 2 / 3",
       pasteTitle: "粘贴“选择此人”的链接地址",
-      pasteDescription: "回到本页面，将刚才复制的“选择此人”页面链接粘贴到下面。",
+      pasteDescription: "回到本页面，将刚才复制的“选择此人”链接粘贴到下面。",
       fieldLabel: "任天堂页面链接",
-      pastePlaceholder: "粘贴“选择此人”的链接地址",
+      pastePlaceholder: "示例：npf71b963c1b7b6d119://auth",
       generateJson: "生成 JSON",
       backLogin: "返回登录说明",
       step3: "STEP 3 / 3",
@@ -97,7 +97,7 @@
       previewErrorNotice: "这是错误页面预览，不会发送请求。",
       loginLinkNotReady: "登录链接还没有准备好。",
       pasteRequired: "请先粘贴任天堂页面链接。",
-      invalidUrl: "链接格式不正确，请粘贴完整的 https 链接。",
+      invalidUrl: "链接格式不正确，请粘贴完整的“选择此人”回调链接，而不是普通网页链接。",
       noLoginLink: "服务端没有返回登录链接。",
       startFailed: "无法获取登录链接，请稍后重试。",
       generateFailed: "生成失败，请重新尝试。",
@@ -139,9 +139,9 @@
       back: "Back",
       step2: "STEP 2 / 3",
       pasteTitle: "Paste the “Select this account” link",
-      pasteDescription: "Return to this page and paste the “Select this account” page link below.",
+      pasteDescription: "Return to this page and paste the “Select this account” link below.",
       fieldLabel: "Nintendo page link",
-      pastePlaceholder: "Paste the “Select this account” link",
+      pastePlaceholder: "Example: npf71b963c1b7b6d119://auth",
       generateJson: "Generate JSON",
       backLogin: "Back to sign-in instructions",
       step3: "STEP 3 / 3",
@@ -165,7 +165,7 @@
       previewErrorNotice: "This is an error-page preview. No request will be sent.",
       loginLinkNotReady: "The sign-in link is not ready yet.",
       pasteRequired: "Please paste the Nintendo page link first.",
-      invalidUrl: "The link format is invalid. Please paste the complete https link.",
+      invalidUrl: "The link format is invalid. Paste the complete “Select this account” callback link, not a regular webpage link.",
       noLoginLink: "The server did not return a sign-in link.",
       startFailed: "Could not get the sign-in link. Please try again later.",
       generateFailed: "Generation failed. Please try again.",
@@ -310,12 +310,12 @@
     const value = input?.value.trim() || "";
     if (!value) {
       showToast(t("pasteRequired"));
-      input?.focus();
+      input?.focus({ preventScroll: true });
       return;
     }
     if (!isLikelyUrl(value)) {
       showToast(t("invalidUrl"));
-      input?.focus();
+      input?.focus({ preventScroll: true });
       return;
     }
 

@@ -50,6 +50,22 @@ S3_GEAR_GENERATOR_API_URL=https://你的-worker地址.workers.dev npm run build:
 
 直接打开 `?preview` 时，可以使用页面上的“上一个”和“下一个”按钮浏览全部页面。
 
+## 使用 Makefile 本地运行
+
+完成 `worker/.dev.vars` 配置后，在项目根目录执行：
+
+```bash
+make install
+make dev
+```
+
+这会同时启动前端和 Worker：
+
+- 前端：http://127.0.0.1:8080
+- Worker：http://127.0.0.1:8787
+
+也可以分别使用 `make frontend` 或 `make worker` 启动单个服务。
+
 ## 本地运行 Worker
 
 ```bash
