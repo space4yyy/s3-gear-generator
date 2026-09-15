@@ -1,6 +1,7 @@
 const DEFAULT_F_GEN_URL = "https://nxapi-znca-api.fancy.org.uk/api/znca/f";
 const NXAPI_AUTH_URL = "https://nxapi-auth.fancy.org.uk/api/oauth/token";
 const NXAPI_AUTH_SCOPE = "ca:gf ca:er ca:dr";
+const PROJECT_URL = "https://github.com/space4yyy/s3-gear-generator";
 const NXAPI_CLIENT_VERSION = "d8fAZDPzwimzQ7c6";
 const NXAPI_NSO_VERSION = "3.5.0";
 // Coral currently expects the same Android client signature used by the
@@ -39,6 +40,10 @@ class ApiError extends Error {
 
 function config(env, key, fallback = "") {
   return String(env?.[key] || fallback).trim();
+}
+
+function projectUserAgent(env) {
+  return `s3-gear-generator/${config(env, "S3_GEAR_GENERATOR_VERSION", "1.0.0")} (+${PROJECT_URL})`;
 }
 
 function jsonResponse(data, status, request, env) {
@@ -236,7 +241,11 @@ async function getNxapiAuthToken(runtime, env) {
   });
   const response = await fetchWithTimeout(NXAPI_AUTH_URL, {
     method: "POST",
-    headers: { Accept: "application/json", "Content-Type": "application/x-www-form-urlencoded" },
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
+      "User-Agent": projectUserAgent(env),
+    },
     body,
   }, 30000);
   const payload = await readJson(response, "nxapi-auth");
@@ -352,7 +361,7 @@ async function parseCoralResponse(runtime, env, response, fGenUrl, encrypted) {
       Authorization: `Bearer ${await getNxapiAuthToken(runtime, env)}`,
       "Content-Type": "application/json",
       Accept: "text/plain",
-      "User-Agent": `s3-gear-generator/${config(env, "S3_GEAR_GENERATOR_VERSION", "1.0.0")}`,
+      "User-Agent": projectUserAgent(env),
     },
     body: JSON.stringify(payload),
   }, 60000);
@@ -384,7 +393,7 @@ async function callFApi(runtime, env, options) {
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json; charset=utf-8",
-    "User-Agent": `s3-gear-generator/${config(env, "S3_GEAR_GENERATOR_VERSION", "1.0.0")}`,
+    "User-Agent": projectUserAgent(env),
     "X-znca-Platform": "Android",
     "X-znca-Version": nsoappVersion,
     Authorization: `Bearer ${await getNxapiAuthToken(runtime, env)}`,

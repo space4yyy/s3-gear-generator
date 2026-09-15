@@ -60,7 +60,6 @@
       thanks: "感谢项目",
       close: "关闭网页",
       continue: "继续",
-      continueWaiting: "继续（{seconds}s）",
       step1: "STEP 1 / 3",
       loginTitle: "前往任天堂网站登录",
       loginInstruction1: "点击下方按钮打开登录网站。",
@@ -129,7 +128,6 @@
       thanks: "Thanks to",
       close: "Close page",
       continue: "Continue",
-      continueWaiting: "Continue ({seconds}s)",
       step1: "STEP 1 / 3",
       loginTitle: "Sign in on the Nintendo website",
       loginInstruction1: "Click the button below to open the sign-in website.",
@@ -186,46 +184,6 @@
     error: previewMode ? t("previewErrorNotice") : "",
     filename: previewMode ? "gear_preview.json" : "",
     generatedData: previewMode ? { preview: true, gear: [] } : null,
-  };
-
-  const CONTINUE_DELAY_SECONDS = 5;
-  const CONTINUE_DELAY_MS = CONTINUE_DELAY_SECONDS * 1000;
-  let continueReadyAt = 0;
-  let continueCountdownTimer = 0;
-
-  const clearContinueCountdown = () => {
-    if (!continueCountdownTimer) return;
-    window.clearTimeout(continueCountdownTimer);
-    continueCountdownTimer = 0;
-  };
-
-  const syncContinueButton = () => {
-    clearContinueCountdown();
-    const button = content.querySelector('[data-action="continue"]');
-
-    if (state.screen !== "welcome" || !button) {
-      continueReadyAt = 0;
-      return;
-    }
-
-    if (!continueReadyAt) continueReadyAt = Date.now() + CONTINUE_DELAY_MS;
-
-    const update = () => {
-      const remaining = Math.max(0, Math.ceil((continueReadyAt - Date.now()) / 1000));
-      const isWaiting = remaining > 0;
-      const label = button.querySelector(".button-label");
-
-      button.disabled = isWaiting;
-      if (label) {
-        label.textContent = isWaiting
-          ? t("continueWaiting").replace("{seconds}", String(remaining))
-          : t("continue");
-      }
-
-      if (isWaiting) continueCountdownTimer = window.setTimeout(update, 200);
-    };
-
-    update();
   };
 
   const escapeHtml = (value) => String(value)
@@ -429,7 +387,7 @@
       <div class="screen-footer">
         <div class="actions">
           <button class="ink-button secondary" data-action="close"><span class="button-label">${t("close")}</span></button>
-          <button class="ink-button" data-action="continue" disabled><span class="button-label">${t("continueWaiting").replace("{seconds}", String(CONTINUE_DELAY_SECONDS))}</span></button>
+          <button class="ink-button" data-action="continue"><span class="button-label">${t("continue")}</span></button>
         </div>
       </div>
     </div>
@@ -586,7 +544,6 @@
       });
     }
 
-    syncContinueButton();
   };
 
   const navigatePreview = (offset) => {

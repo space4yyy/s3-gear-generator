@@ -9,3 +9,4 @@ node_modules/
 
 # Local output
 gear_*.json
+dist/

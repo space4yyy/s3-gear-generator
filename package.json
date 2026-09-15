@@ -1,0 +1,8 @@
+{
+  "name": "s3-gear-generator",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:frontend": "node scripts/build-frontend.mjs"
+  }
+}

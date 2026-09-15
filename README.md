@@ -32,6 +32,22 @@ Splatoon 3 装备 JSON 生成器的 Web 项目。项目分为静态前端和 Clo
 ?preview&lang=en
 ```
 
+## 构建前端
+
+构建脚本会读取 `S3_GEAR_GENERATOR_API_URL`，并在 `dist/config.js` 中生成运行时配置：
+
+```bash
+S3_GEAR_GENERATOR_API_URL=http://127.0.0.1:8787 npm run build:frontend
+```
+
+生产环境将变量设置为线上 Worker 地址：
+
+```bash
+S3_GEAR_GENERATOR_API_URL=https://你的-worker地址.workers.dev npm run build:frontend
+```
+
+不要把 `FLOW_SECRET` 等 Worker 密钥放入这个变量或前端文件。
+
 直接打开 `?preview` 时，可以使用页面上的“上一个”和“下一个”按钮浏览全部页面。
 
 ## 本地运行 Worker
@@ -89,11 +105,12 @@ npx wrangler deploy
 
 ### 部署 Pages
 
-只部署 `frontend/` 目录，不要把 `worker/` 源码作为网页静态文件上传：
+先构建前端，再部署 `dist/` 目录，不要把 `worker/` 源码作为网页静态文件上传：
 
 ```bash
+npm run build:frontend
 npx wrangler pages project create s3-gear-generator
-npx wrangler pages deploy frontend --project-name s3-gear-generator
+npx wrangler pages deploy dist --project-name s3-gear-generator
 ```
 
 部署完成后，将 `worker/wrangler.jsonc` 中的 `WEB_ORIGIN` 改成实际 Pages 域名，再重新部署 Worker。
