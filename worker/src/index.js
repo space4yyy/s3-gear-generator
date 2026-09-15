@@ -1,10 +1,11 @@
 const DEFAULT_F_GEN_URL = "https://nxapi-znca-api.fancy.org.uk/api/znca/f";
 const NXAPI_AUTH_URL = "https://nxapi-auth.fancy.org.uk/api/oauth/token";
 const NXAPI_AUTH_SCOPE = "ca:gf ca:er ca:dr";
-const NXAPI_CLIENT_VERSION = "w8zSLBsxR7rVoGJA";
+const NXAPI_CLIENT_VERSION = "d8fAZDPzwimzQ7c6";
+const NXAPI_NSO_VERSION = "3.5.0";
 // Coral currently expects the same Android client signature used by the
-// working CLI implementation. This is separate from X-ProductVersion, which
-// remains the dynamically fetched NSO app version.
+// working CLI implementation. It is paired with the pinned NSO app version
+// above and is separate from X-ProductVersion.
 const CORAL_ANDROID_VERSION = "12";
 const SPLATNET3_URL = "https://api.lp1.av5ja.srv.nintendo.net";
 const GRAPHQL_URL = `${SPLATNET3_URL}/api/graphql`;
@@ -244,20 +245,9 @@ async function getNxapiAuthToken(runtime, env) {
   return runtime.nxapiAuthToken;
 }
 
-async function getNsoappVersion(runtime, env, fGenUrl) {
+async function getNsoappVersion(runtime) {
   if (runtime.nsoappVersion) return runtime.nsoappVersion;
-  const configUrl = nxapiEndpoint(fGenUrl, "config");
-  const response = await fetchWithTimeout(configUrl, {
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${await getNxapiAuthToken(runtime, env)}`,
-      "User-Agent": `s3-gear-generator/${config(env, "S3_GEAR_GENERATOR_VERSION", "1.0.0")}`,
-      "X-znca-Client-Version": NXAPI_CLIENT_VERSION,
-    },
-  }, 30000);
-  const payload = await readJson(response, "nxapi 配置服务");
-  if (!payload.nso_version) throw new ApiError("upstream_error", "nxapi 未返回 Nintendo Switch Online 版本。", 502);
-  runtime.nsoappVersion = payload.nso_version;
+  runtime.nsoappVersion = NXAPI_NSO_VERSION;
   return runtime.nsoappVersion;
 }
 
@@ -389,7 +379,7 @@ async function postCoralRequest(url, body, encryptedBody, nsoappVersion, coralAc
 
 async function callFApi(runtime, env, options) {
   const fGenUrl = options.fGenUrl;
-  const nsoappVersion = await getNsoappVersion(runtime, env, fGenUrl);
+  const nsoappVersion = await getNsoappVersion(runtime);
   const requestBody = buildFRequest(options);
   const headers = {
     Accept: "application/json",
@@ -478,7 +468,7 @@ function shouldRetryCoralResponse(payload) {
 }
 
 async function getGtoken(runtime, env, fGenUrl, sessionToken) {
-  const nsoappVersion = await getNsoappVersion(runtime, env, fGenUrl);
+  const nsoappVersion = await getNsoappVersion(runtime);
   const tokenResponse = await fetchWithTimeout("https://accounts.nintendo.com/connect/1.0.0/api/token", {
     method: "POST",
     headers: {
@@ -828,7 +818,7 @@ async function generateFlow(body, env) {
   const sessionTokenCode = getSessionTokenCode(selectPersonUrl);
   const fGenUrl = getFGenUrl(env);
   const runtime = {};
-  const nsoappVersion = await getNsoappVersion(runtime, env, fGenUrl);
+  const nsoappVersion = await getNsoappVersion(runtime);
   const sessionToken = await getSessionToken(sessionTokenCode, flow.verifier, nsoappVersion);
   const gtoken = await getGtoken(runtime, env, fGenUrl, sessionToken);
   const bullet = await getBulletToken(runtime, env, gtoken.webServiceToken, gtoken.language, gtoken.country, gtoken.appUserAgent);

@@ -15,6 +15,7 @@
   const content = document.querySelector("#card-content");
   const toast = document.querySelector("#toast");
   const footerSummary = document.querySelector("#footer-summary");
+  const footerThanksLabel = document.querySelector("#footer-thanks-label");
   const footerAuthorLabel = document.querySelector("#footer-author-label");
   const footerGithub = document.querySelector("#footer-github");
   const languageToggle = document.querySelector("#language-toggle");
@@ -38,7 +39,7 @@
       languageButton: "English",
       footerSummary: "Splatoon3 gear generator · 不保存用户信息",
       footerAuthor: "作者：",
-      footerGithub: "项目 GitHub",
+      footerGithub: "github",
       previewWelcome: "欢迎页",
       previewLogin: "Step 1",
       previewPaste: "Step 2",
@@ -49,11 +50,17 @@
       next: "下一个",
       appEyebrow: "Splatoon3 GEAR GENERATOR",
       welcomeTitle: "准备生成装备数据？",
-      welcomeLead: "跟随几个简单步骤，从你的任天堂账号生成可以下载的 gear JSON 文件。",
       privacy: "本次流程不会保存你的个人信息或登录 token",
+      riskLabel: "风险说明与免责声明",
+      riskTitle: "风险说明与免责声明",
+      riskItem1: "请确认地址为 accounts.nintendo.com。",
+      riskItem2: "依赖第三方服务，不保证可用性或安全性。",
+      riskItem3: "JSON 可能含敏感数据，请勿分享或上传。",
+      riskItem4: "请遵守 Nintendo 条款，作者不对限制、中断或错误负责。",
       thanks: "感谢项目",
       close: "关闭网页",
       continue: "继续",
+      continueWaiting: "继续（{seconds}s）",
       step1: "STEP 1 / 3",
       loginTitle: "前往任天堂网站登录",
       loginInstruction1: "点击下方按钮打开登录网站。",
@@ -101,7 +108,7 @@
       languageButton: "中文",
       footerSummary: "Splatoon3 gear generator · Your information is not stored",
       footerAuthor: "Author: ",
-      footerGithub: "Project GitHub",
+      footerGithub: "github",
       previewWelcome: "Welcome",
       previewLogin: "Step 1",
       previewPaste: "Step 2",
@@ -112,11 +119,17 @@
       next: "Next",
       appEyebrow: "Splatoon3 GEAR GENERATOR",
       welcomeTitle: "Ready to generate your gear data?",
-      welcomeLead: "Follow a few simple steps to generate a downloadable gear JSON file from your Nintendo account.",
       privacy: "Your personal information and login token are not stored",
+      riskLabel: "Risk notice and disclaimer",
+      riskTitle: "Risk notice and disclaimer",
+      riskItem1: "Use accounts.nintendo.com.",
+      riskItem2: "Third-party service; availability and security are not guaranteed.",
+      riskItem3: "JSON may contain sensitive data. Do not share it.",
+      riskItem4: "Follow Nintendo's terms. No liability for outages or errors.",
       thanks: "Thanks to",
       close: "Close page",
       continue: "Continue",
+      continueWaiting: "Continue ({seconds}s)",
       step1: "STEP 1 / 3",
       loginTitle: "Sign in on the Nintendo website",
       loginInstruction1: "Click the button below to open the sign-in website.",
@@ -173,6 +186,46 @@
     error: previewMode ? t("previewErrorNotice") : "",
     filename: previewMode ? "gear_preview.json" : "",
     generatedData: previewMode ? { preview: true, gear: [] } : null,
+  };
+
+  const CONTINUE_DELAY_SECONDS = 5;
+  const CONTINUE_DELAY_MS = CONTINUE_DELAY_SECONDS * 1000;
+  let continueReadyAt = 0;
+  let continueCountdownTimer = 0;
+
+  const clearContinueCountdown = () => {
+    if (!continueCountdownTimer) return;
+    window.clearTimeout(continueCountdownTimer);
+    continueCountdownTimer = 0;
+  };
+
+  const syncContinueButton = () => {
+    clearContinueCountdown();
+    const button = content.querySelector('[data-action="continue"]');
+
+    if (state.screen !== "welcome" || !button) {
+      continueReadyAt = 0;
+      return;
+    }
+
+    if (!continueReadyAt) continueReadyAt = Date.now() + CONTINUE_DELAY_MS;
+
+    const update = () => {
+      const remaining = Math.max(0, Math.ceil((continueReadyAt - Date.now()) / 1000));
+      const isWaiting = remaining > 0;
+      const label = button.querySelector(".button-label");
+
+      button.disabled = isWaiting;
+      if (label) {
+        label.textContent = isWaiting
+          ? t("continueWaiting").replace("{seconds}", String(remaining))
+          : t("continue");
+      }
+
+      if (isWaiting) continueCountdownTimer = window.setTimeout(update, 200);
+    };
+
+    update();
   };
 
   const escapeHtml = (value) => String(value)
@@ -359,21 +412,24 @@
         <h1>${t("welcomeTitle")}</h1>
       </div>
       <div class="screen-body welcome-body">
-        <p class="lead">${t("welcomeLead")}</p>
-        <p class="privacy-note">${t("privacy")}</p>
-        <div class="thanks-projects" aria-label="感谢项目">
-          <span class="thanks-label">${t("thanks")}</span>
-          <div class="project-links">
-            <a href="https://github.com/samuelthomas2774/nxapi" target="_blank" rel="noopener noreferrer">nxapi</a>
-            <a href="https://github.com/samuelthomas2774/nxapi-znca-api" target="_blank" rel="noopener noreferrer">nxapi-znca-api</a>
-            <a href="https://github.com/frozenpandaman/s3s" target="_blank" rel="noopener noreferrer">s3s</a>
+        <aside class="risk-notice" aria-label="${t("riskLabel")}">
+          <div class="risk-notice-heading">
+            <span class="risk-notice-icon" aria-hidden="true">!</span>
+            <strong>${t("riskTitle")}</strong>
           </div>
-        </div>
+          <p class="risk-privacy">${t("privacy")}</p>
+          <ul class="risk-notice-list">
+            <li>${t("riskItem1")}</li>
+            <li>${t("riskItem2")}</li>
+            <li>${t("riskItem3")}</li>
+            <li>${t("riskItem4")}</li>
+          </ul>
+        </aside>
       </div>
       <div class="screen-footer">
         <div class="actions">
           <button class="ink-button secondary" data-action="close"><span class="button-label">${t("close")}</span></button>
-          <button class="ink-button" data-action="continue"><span class="button-label">${t("continue")}</span></button>
+          <button class="ink-button" data-action="continue" disabled><span class="button-label">${t("continueWaiting").replace("{seconds}", String(CONTINUE_DELAY_SECONDS))}</span></button>
         </div>
       </div>
     </div>
@@ -506,6 +562,7 @@
     content.innerHTML = templates[state.screen]();
     document.documentElement.lang = currentLanguage === "en" ? "en" : "zh-CN";
     footerSummary.textContent = t("footerSummary");
+    footerThanksLabel.textContent = t("thanks");
     footerAuthorLabel.textContent = t("footerAuthor");
     footerGithub.textContent = t("footerGithub");
     languageToggle.textContent = t("languageButton");
@@ -528,6 +585,8 @@
         }, index * 760);
       });
     }
+
+    syncContinueButton();
   };
 
   const navigatePreview = (offset) => {
@@ -557,7 +616,10 @@
     if (!action) return;
 
     if (action === "close") closePage();
-    if (action === "continue") startFlow();
+    if (action === "continue") {
+      if (event.target.closest("button")?.disabled) return;
+      startFlow();
+    }
     if (action === "open-login") openLogin();
     if (action === "back") setScreen("welcome");
     if (action === "back-login") setScreen("login");
