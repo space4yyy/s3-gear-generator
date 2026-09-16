@@ -1262,27 +1262,43 @@ h2,
   .game-card {
     grid-row: 1;
     align-self: center;
-    height: 580px;
-    min-height: 580px;
+    height: 560px;
+    min-height: 560px;
+    background-size: auto 100%;
+    background-position: center;
   }
 
   .card-content {
-    height: 580px;
-    min-height: 580px;
+    height: 560px;
+    min-height: 560px;
   }
 
   .screen-layout {
-    grid-template-rows: 92px minmax(0, 1fr) 244px;
-    padding: 66px 24px 40px;
+    grid-template-rows: 84px minmax(0, 1fr) 216px;
+    padding: 52px 24px 32px;
   }
 
   .screen-body {
     min-width: 0;
-    padding-top: 16px;
+    padding-top: 8px;
     overflow: visible;
   }
 
+  .screen-header .eyebrow {
+    margin-bottom: 8px;
+  }
+
+  .screen-header h1,
+  .screen-header h2 {
+    line-height: 1.05;
+  }
+
+  .screen-header {
+    transform: translateY(14px);
+  }
+
   .risk-notice {
+    margin-top: 12px;
     padding: 12px 14px 10px;
   }
 
@@ -1291,7 +1307,15 @@ h2,
   }
 
   .risk-privacy {
+    margin-top: 5px;
     font-size: 0.75rem;
+    line-height: 1.28;
+  }
+
+  .risk-notice-list {
+    padding-right: 6px;
+    padding-left: 6px;
+    line-height: 1.1;
   }
 
   .screen-body > .subtle {
@@ -1310,17 +1334,21 @@ h2,
   }
 
   .game-card[data-screen="welcome"] .card-content {
-    height: 580px;
-    min-height: 580px;
+    height: 560px;
+    min-height: 560px;
   }
 
   .game-card[data-screen="welcome"] .screen-layout {
-    grid-template-rows: 92px minmax(0, 1fr) 244px;
+    grid-template-rows: 84px minmax(0, 1fr) 216px;
+  }
+
+  .screen-footer {
+    transform: translateY(-18px);
   }
 
   .game-card[data-screen="login"] .card-content {
-    height: 580px;
-    min-height: 580px;
+    height: 560px;
+    min-height: 560px;
   }
 
   .game-card .screen-footer .ink-button {
@@ -1396,29 +1424,37 @@ h2,
   }
 
   .game-card {
-    min-height: 580px;
+    min-height: 560px;
   }
 
   .card-content,
   .game-card[data-screen="welcome"] .card-content,
   .game-card[data-screen="login"] .card-content {
-    height: 580px;
-    min-height: 580px;
+    height: 560px;
+    min-height: 560px;
   }
 
   .screen-layout {
-    grid-template-rows: 80px minmax(0, 1fr) 244px;
-    padding: 40px 18px 40px;
+    grid-template-rows: 80px minmax(0, 1fr) 216px;
+    padding: 40px 18px 32px;
   }
 
   .game-card[data-screen="welcome"] .screen-layout {
-    grid-template-rows: 80px minmax(0, 1fr) 244px;
+    grid-template-rows: 80px minmax(0, 1fr) 216px;
+  }
+
+  .screen-footer {
+    transform: translateY(-16px);
   }
 
   .screen-header h1,
   .screen-header h2 {
     font-size: 1.35rem;
     line-height: 1.05;
+  }
+
+  .screen-header {
+    transform: translateY(10px);
   }
 
   .game-card[data-screen="login"] .screen-header h2 {
