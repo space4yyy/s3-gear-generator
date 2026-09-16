@@ -607,10 +607,10 @@ h2 { max-width: 780px; font-size: clamp(1.9rem, 4.8vw, 3.25rem); }
   pointer-events: none;
   content: "";
   background: linear-gradient(180deg, #7440df 0%, #4b1db6 64%, #35118b 100%);
-  -webkit-mask: url("/assets/buttons/InkBtnM_00_s.png") center 38% / 140% 210% no-repeat;
-  mask: url("/assets/buttons/InkBtnM_00_s.png") center 38% / 140% 210% no-repeat;
-  -webkit-mask-mode: luminance;
-  mask-mode: luminance;
+  -webkit-mask: url("/assets/buttons/InkBtnM_00_alpha.png") center 38% / 140% 210% no-repeat;
+  mask: url("/assets/buttons/InkBtnM_00_alpha.png") center 38% / 140% 210% no-repeat;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
   filter: drop-shadow(0 10px 0 rgba(12, 4, 35, 0.62));
   transition: transform 160ms ease, filter 160ms ease, opacity 160ms ease;
 }
@@ -622,10 +622,10 @@ h2 { max-width: 780px; font-size: clamp(1.9rem, 4.8vw, 3.25rem); }
   background:
     radial-gradient(ellipse 86% 38% at 50% 94%, rgba(255, 255, 255, 0.95) 0 19%, rgba(150, 232, 255, 0.78) 39%, transparent 72%),
     linear-gradient(180deg, transparent 0 64%, rgba(255, 255, 255, 0.12) 76%, transparent 100%);
-  -webkit-mask: url("/assets/buttons/InkBtnM_00_s.png") center 38% / 140% 210% no-repeat;
-  mask: url("/assets/buttons/InkBtnM_00_s.png") center 38% / 140% 210% no-repeat;
-  -webkit-mask-mode: luminance;
-  mask-mode: luminance;
+  -webkit-mask: url("/assets/buttons/InkBtnM_00_alpha.png") center 38% / 140% 210% no-repeat;
+  mask: url("/assets/buttons/InkBtnM_00_alpha.png") center 38% / 140% 210% no-repeat;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
   filter: blur(0.5px);
 }
 
@@ -633,10 +633,10 @@ h2 { max-width: 780px; font-size: clamp(1.9rem, 4.8vw, 3.25rem); }
 .ink-button:hover::before,
 .ink-button:focus-visible::before {
   background: linear-gradient(180deg, #f4ff3e 0%, #c7f000 60%, #8fc400 100%);
-  -webkit-mask: url("/assets/buttons/InkBtnM_13_s.png") center 0% / 110% 130% no-repeat;
-  mask: url("/assets/buttons/InkBtnM_13_s.png") center 0% / 110% 130% no-repeat;
-  -webkit-mask-mode: luminance;
-  mask-mode: luminance;
+  -webkit-mask: url("/assets/buttons/InkBtnM_13_alpha.png") center 0% / 110% 130% no-repeat;
+  mask: url("/assets/buttons/InkBtnM_13_alpha.png") center 0% / 110% 130% no-repeat;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
   filter: drop-shadow(0 10px 0 rgba(48, 62, 0, 0.58));
 }
 
@@ -648,10 +648,10 @@ h2 { max-width: 780px; font-size: clamp(1.9rem, 4.8vw, 3.25rem); }
   background:
     radial-gradient(ellipse 35% 22% at 65% 13%, rgba(255, 255, 255, 0.98) 0 12%, rgba(255, 255, 255, 0.46) 28%, transparent 70%),
     linear-gradient(150deg, rgba(255, 255, 255, 0.55), transparent 24% 100%);
-  -webkit-mask: url("/assets/buttons/InkBtnM_13_s.png") center 0% / 110% 130% no-repeat;
-  mask: url("/assets/buttons/InkBtnM_13_s.png") center 0% / 110% 130% no-repeat;
-  -webkit-mask-mode: luminance;
-  mask-mode: luminance;
+  -webkit-mask: url("/assets/buttons/InkBtnM_13_alpha.png") center 0% / 110% 130% no-repeat;
+  mask: url("/assets/buttons/InkBtnM_13_alpha.png") center 0% / 110% 130% no-repeat;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
 }
 
 .button-label {
@@ -678,10 +678,10 @@ h2 { max-width: 780px; font-size: clamp(1.9rem, 4.8vw, 3.25rem); }
 .actions:has(.ink-button.secondary:hover) .ink-button:not(.secondary)::before,
 .actions:has(.ink-button.secondary:focus-visible) .ink-button:not(.secondary)::before {
   background: linear-gradient(180deg, #7440df 0%, #4b1db6 64%, #35118b 100%);
-  -webkit-mask: url("/assets/buttons/InkBtnM_00_s.png") center 38% / 140% 210% no-repeat;
-  mask: url("/assets/buttons/InkBtnM_00_s.png") center 38% / 140% 210% no-repeat;
-  -webkit-mask-mode: luminance;
-  mask-mode: luminance;
+  -webkit-mask: url("/assets/buttons/InkBtnM_00_alpha.png") center 38% / 140% 210% no-repeat;
+  mask: url("/assets/buttons/InkBtnM_00_alpha.png") center 38% / 140% 210% no-repeat;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
   filter: drop-shadow(0 10px 0 rgba(12, 4, 35, 0.62));
 }
 
@@ -692,10 +692,10 @@ h2 { max-width: 780px; font-size: clamp(1.9rem, 4.8vw, 3.25rem); }
   background:
     radial-gradient(ellipse 86% 38% at 50% 94%, rgba(255, 255, 255, 0.95) 0 19%, rgba(150, 232, 255, 0.78) 39%, transparent 72%),
     linear-gradient(180deg, transparent 0 64%, rgba(255, 255, 255, 0.12) 76%, transparent 100%);
-  -webkit-mask: url("/assets/buttons/InkBtnM_00_s.png") center 38% / 140% 210% no-repeat;
-  mask: url("/assets/buttons/InkBtnM_00_s.png") center 38% / 140% 210% no-repeat;
-  -webkit-mask-mode: luminance;
-  mask-mode: luminance;
+  -webkit-mask: url("/assets/buttons/InkBtnM_00_alpha.png") center 38% / 140% 210% no-repeat;
+  mask: url("/assets/buttons/InkBtnM_00_alpha.png") center 38% / 140% 210% no-repeat;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
 }
 
 .actions:has(.ink-button.secondary:hover) .ink-button:not(.secondary) .button-label,
