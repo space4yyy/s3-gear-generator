@@ -667,6 +667,13 @@ h2 { max-width: 780px; font-size: clamp(1.9rem, 4.8vw, 3.25rem); }
   text-shadow: 2px 3px 0 rgba(22, 16, 63, 0.55);
 }
 
+/* The lime action is the initially selected/default action, so its label
+   should already use the selected-state contrast before the pointer moves. */
+.ink-button:not(.secondary) .button-label {
+  color: #20200d;
+  text-shadow: 1px 2px 0 rgba(255, 255, 255, 0.35);
+}
+
 .ink-button:hover .button-label,
 .ink-button:focus-visible .button-label {
   color: #20200d;
