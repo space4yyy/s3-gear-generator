@@ -518,6 +518,25 @@
     };
     card.dataset.screen = state.screen;
     content.innerHTML = templates[state.screen]();
+
+    if (state.screen === "paste") {
+      const input = content.querySelector("#select-person-url");
+      const resetPastePosition = (pagePosition) => {
+        if (!input) return;
+        input.scrollTop = 0;
+        input.scrollLeft = 0;
+        if (pagePosition) window.scrollTo(pagePosition.x, pagePosition.y);
+      };
+
+      input?.addEventListener("paste", () => {
+        const pagePosition = { x: window.scrollX, y: window.scrollY };
+        resetPastePosition(pagePosition);
+        window.requestAnimationFrame(() => resetPastePosition(pagePosition));
+        window.setTimeout(() => resetPastePosition(pagePosition), 0);
+      });
+      input?.addEventListener("input", () => resetPastePosition());
+    }
+
     document.documentElement.lang = currentLanguage === "en" ? "en" : "zh-CN";
     footerSummary.textContent = t("footerSummary");
     footerThanksLabel.textContent = t("thanks");
