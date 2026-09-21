@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const frontendRoot = resolve(projectRoot, "frontend");
 const port = Number(process.env.PORT || 8080);
-const host = process.env.HOST || "127.0.0.1";
+const host = process.env.HOST || "0.0.0.0";
 
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
@@ -71,6 +71,9 @@ const server = createServer(async (request, response) => {
 });
 
 server.listen(port, host, () => {
-  const displayHost = host === "0.0.0.0" ? "127.0.0.1" : host;
-  console.log(`Frontend running at http://${displayHost}:${port}`);
+  const displayHost = host === "0.0.0.0" ? "0.0.0.0" : host;
+  console.log(`Frontend listening at http://${displayHost}:${port}`);
+  if (host === "0.0.0.0") {
+    console.log(`LAN access: http://<your-computer-ip>:${port}`);
+  }
 });

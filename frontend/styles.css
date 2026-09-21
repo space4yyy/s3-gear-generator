@@ -65,7 +65,7 @@ textarea:focus-visible {
   min-height: 500px;
   isolation: isolate;
   overflow: hidden;
-  background: transparent url("/assets/Cmn_SystemWindow.webp") center / 100% 100% no-repeat;
+  background: transparent;
 }
 
 .card-content {
@@ -526,7 +526,7 @@ body {
 .game-card {
   width: min(100%, 940px);
   min-height: 620px;
-  background: transparent url("/assets/Cmn_SystemWindow.webp") center / 100% 100% no-repeat;
+  background: transparent;
 }
 
 .card-content {
