@@ -1537,3 +1537,77 @@ h2,
     line-height: 1.2;
   }
 }
+
+/* Keep the single-page mobile layout inside the stable small viewport. The
+   previous fixed card plus 1fr grid could push the global footer below the
+   first viewport when browser chrome changed its dynamic height. */
+@media (max-width: 620px) {
+  html,
+  body {
+    min-height: 100%;
+  }
+
+  .app-shell {
+    display: flex;
+    min-height: 100svh;
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: max(12px, env(safe-area-inset-top)) 12px max(14px, env(safe-area-inset-bottom));
+    overflow: visible;
+  }
+
+  .game-card,
+  .card-content {
+    height: 520px;
+    min-height: 520px;
+  }
+
+  .game-card {
+    flex: 0 0 auto;
+  }
+
+  .screen-layout {
+    grid-template-rows: 76px minmax(0, 1fr) 156px;
+    padding: 34px 20px 24px;
+  }
+
+  .game-card[data-screen="welcome"] .screen-layout {
+    grid-template-rows: 76px minmax(0, 1fr) 156px;
+  }
+
+  .game-card[data-screen="paste"] .screen-layout {
+    grid-template-rows: 92px minmax(0, 1fr) 144px;
+  }
+
+  .screen-header {
+    transform: translateY(6px);
+  }
+
+  .screen-footer {
+    transform: none;
+  }
+
+  .footer-note {
+    position: absolute;
+    right: 12px;
+    bottom: 10px;
+    left: 12px;
+    width: auto;
+    flex: none;
+    margin: 0;
+    transform: none;
+    font-size: clamp(0.64rem, 1.8vw, 0.72rem);
+    line-height: 1.2;
+  }
+
+  .footer-thanks {
+    gap: 3px 10px;
+  }
+
+  .project-links {
+    gap: 4px 10px;
+  }
+}
