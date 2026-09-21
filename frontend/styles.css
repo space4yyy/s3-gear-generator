@@ -1366,7 +1366,7 @@ h2,
   }
 
   .game-card[data-screen="paste"] .screen-layout {
-    grid-template-rows: 124px minmax(0, 1fr) 216px;
+    grid-template-rows: 124px minmax(0, 1fr) 144px;
   }
 
   .screen-footer {
@@ -1473,7 +1473,7 @@ h2,
   }
 
   .game-card[data-screen="paste"] .screen-layout {
-    grid-template-rows: 120px minmax(0, 1fr) 216px;
+    grid-template-rows: 120px minmax(0, 1fr) 144px;
   }
 
   .screen-footer {

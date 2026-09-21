@@ -68,7 +68,7 @@
       loginLinkTitle: "登录链接",
       demoNotice: "当前为演示模式，接入 Worker 后这里会显示真实登录链接。",
       goWebsite: "前往网站",
-      back: "返回上一步",
+      back: "返回",
       step2: "STEP 2 / 3",
       pasteTitle: "粘贴“选择此人”的链接地址",
       pasteDescription: "回到本页面，将刚才复制的“选择此人”链接粘贴到下面。",
@@ -386,7 +386,6 @@
       </div>
       <div class="screen-footer">
         <div class="actions">
-          <button class="ink-button secondary" data-action="close"><span class="button-label">${t("close")}</span></button>
           <button class="ink-button" data-action="continue"><span class="button-label">${t("continue")}</span></button>
         </div>
       </div>
@@ -410,10 +409,9 @@
       </div>
       <div class="screen-footer">
         <div class="actions">
-          <button class="ink-button secondary" data-action="close"><span class="button-label">${t("close")}</span></button>
+          <button class="ink-button secondary" data-action="back"><span class="button-label">${t("back")}</span></button>
           <button class="ink-button" data-action="open-login"><span class="button-label">${t("goWebsite")}</span></button>
         </div>
-        <button class="text-button" data-action="back">${t("back")}</button>
       </div>
     </div>
   `;
@@ -431,10 +429,9 @@
       </div>
       <div class="screen-footer">
         <div class="actions">
-          <button class="ink-button secondary" data-action="close"><span class="button-label">${t("close")}</span></button>
+          <button class="ink-button secondary" data-action="back-login"><span class="button-label">${t("back")}</span></button>
           <button class="ink-button" data-action="generate"><span class="button-label">${t("generateJson")}</span></button>
         </div>
-        <button class="text-button" data-action="back-login">${t("backLogin")}</button>
       </div>
     </div>
   `;
