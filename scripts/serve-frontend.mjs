@@ -18,6 +18,7 @@ const mimeTypes = {
   ".svg": "image/svg+xml",
   ".ttf": "font/ttf",
   ".webp": "image/webp",
+  ".woff2": "font/woff2",
 };
 
 const server = createServer(async (request, response) => {

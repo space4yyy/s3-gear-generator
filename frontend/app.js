@@ -65,7 +65,8 @@
       loginInstruction1: "点击下方按钮打开登录网站。",
       loginInstruction2: "完成 Nintendo 账号登录并选择要使用的用户。",
       loginInstruction3: "右键点击“选择此人”按钮，复制链接地址，然后返回这里。",
-      loginLinkTitle: "登录链接",
+      loginLinkTitle: "点击复制登录链接",
+      loginLinkCopied: "已复制登录链接。",
       demoNotice: "当前为演示模式，接入 Worker 后这里会显示真实登录链接。",
       goWebsite: "前往网站",
       back: "返回",
@@ -133,7 +134,8 @@
       loginInstruction1: "Click the button below to open the sign-in website.",
       loginInstruction2: "Sign in to your Nintendo Account and choose the user you want to use.",
       loginInstruction3: "Right-click the “Select this account” button and copy its link address, then return here.",
-      loginLinkTitle: "Sign-in link",
+      loginLinkTitle: "Click to copy sign-in link",
+      loginLinkCopied: "Sign-in link copied.",
       demoNotice: "Demo mode is active. A real sign-in link will appear here after connecting a Worker.",
       goWebsite: "Open website",
       back: "Back",
@@ -200,16 +202,26 @@
     showToast.timer = window.setTimeout(() => toast.classList.remove("visible"), 3600);
   };
 
+  let transitionTimer = 0;
+  let progressTimers = [];
+
+  const clearProgressTimers = () => {
+    progressTimers.forEach((timerId) => window.clearTimeout(timerId));
+    progressTimers = [];
+  };
+
   const setScreen = (screen, extra = {}) => {
+    window.clearTimeout(transitionTimer);
+    clearProgressTimers();
     content.classList.remove("card-enter");
     content.classList.add("card-exit");
 
-    window.setTimeout(() => {
+    transitionTimer = window.setTimeout(() => {
       Object.assign(state, extra, { screen });
       render();
       content.classList.remove("card-exit");
       content.classList.add("card-enter");
-    }, 210);
+    }, 200);
   };
 
   const closePage = () => {
@@ -246,14 +258,15 @@
     return payload;
   };
 
-  const startFlow = async () => {
+  const startFlow = async (button) => {
     state.error = "";
     if (localDemoMode) {
-      state.loginUrl = "https://accounts.nintendo.com/";
+      state.loginUrl = previewMode ? "https://accounts.nintendo.com/preview" : "https://accounts.nintendo.com/";
       setScreen("login");
       return;
     }
 
+    if (button) button.disabled = true;
     try {
       const payload = await requestJson("/api/start", { method: "POST" });
       if (!payload?.login_url) throw new Error(t("noLoginLink"));
@@ -263,6 +276,18 @@
     } catch (error) {
       state.error = error.message || t("startFailed");
       setScreen("error");
+    } finally {
+      if (button) button.disabled = false;
+    }
+  };
+
+  const copyLoginLink = async () => {
+    if (!state.loginUrl) return;
+    try {
+      await navigator.clipboard.writeText(state.loginUrl);
+      showToast(t("loginLinkCopied"));
+    } catch {
+      // Fallback: ignore if clipboard access is denied
     }
   };
 
@@ -404,7 +429,7 @@
           <div class="instruction"><span class="instruction-number">2</span><span>${t("loginInstruction2")}</span></div>
           <div class="instruction"><span class="instruction-number">3</span><span>${t("loginInstruction3")}</span></div>
         </div>
-        <div class="login-link" title="${t("loginLinkTitle")}">${escapeHtml(state.loginUrl)}</div>
+        <div class="login-link" role="button" tabindex="0" data-action="copy-login" title="${t("loginLinkTitle")}">${escapeHtml(state.loginUrl)}</div>
         ${demoMode ? `<p class="subtle">${t("demoNotice")}</p>` : ""}
       </div>
       <div class="screen-footer">
@@ -532,6 +557,12 @@
         window.setTimeout(() => resetPastePosition(pagePosition), 0);
       });
       input?.addEventListener("input", () => resetPastePosition());
+      input?.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          generate();
+        }
+      });
     }
 
     document.documentElement.lang = currentLanguage === "en" ? "en" : "zh-CN";
@@ -548,15 +579,17 @@
       previewNext.textContent = t("next");
     }
 
+    clearProgressTimers();
     if (state.screen === "generating") {
       const items = [...content.querySelectorAll("[data-progress-index]")];
       items.forEach((item, index) => {
-        window.setTimeout(() => {
+        const timerId = window.setTimeout(() => {
           items.forEach((candidate, candidateIndex) => {
             candidate.classList.toggle("active", candidateIndex === index);
             candidate.classList.toggle("done", candidateIndex < index);
           });
         }, index * 760);
+        progressTimers.push(timerId);
       });
     }
 
@@ -568,11 +601,24 @@
     const nextScreen = previewOrder[nextIndex];
     const nextUrl = new URL(window.location.href);
     nextUrl.searchParams.set("preview", nextScreen);
-    window.location.assign(nextUrl.href);
+    window.history.replaceState({}, "", nextUrl.href);
+    if (!state.loginUrl) state.loginUrl = "https://accounts.nintendo.com/preview";
+    if (!state.filename) state.filename = "gear_preview.json";
+    if (!state.generatedData) state.generatedData = { preview: true, gear: [] };
+    if (!state.error) state.error = t("previewErrorNotice");
+    setScreen(nextScreen);
   };
 
   previewPrev.addEventListener("click", () => navigatePreview(-1));
   previewNext.addEventListener("click", () => navigatePreview(1));
+
+  if (previewMode) {
+    window.addEventListener("keydown", (event) => {
+      if (event.target.matches("input, textarea")) return;
+      if (event.key === "ArrowLeft") navigatePreview(-1);
+      if (event.key === "ArrowRight") navigatePreview(1);
+    });
+  }
 
   languageToggle.addEventListener("click", () => {
     currentLanguage = currentLanguage === "zh" ? "en" : "zh";
@@ -585,14 +631,17 @@
   });
 
   content.addEventListener("click", (event) => {
-    const action = event.target.closest("[data-action]")?.dataset.action;
+    const target = event.target.closest("[data-action]");
+    const action = target?.dataset.action;
     if (!action) return;
 
     if (action === "close") closePage();
     if (action === "continue") {
-      if (event.target.closest("button")?.disabled) return;
-      startFlow();
+      const button = target.closest("button");
+      if (button?.disabled) return;
+      startFlow(button);
     }
+    if (action === "copy-login") copyLoginLink();
     if (action === "open-login") openLogin();
     if (action === "back") setScreen("welcome");
     if (action === "back-login") setScreen("login");
@@ -600,6 +649,14 @@
     if (action === "download") download();
     if (action === "restart") restart();
     if (action === "back-paste") setScreen("paste");
+  });
+
+  content.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    const target = event.target.closest('[data-action="copy-login"]');
+    if (!target) return;
+    event.preventDefault();
+    copyLoginLink();
   });
 
   render();
