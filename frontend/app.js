@@ -88,6 +88,7 @@
       complete: "COMPLETE",
       successTitle: "生成成功",
       successDescription: "你的装备数据已经准备好，可以下载到本地。",
+      followAuthor: "如有帮助，请关注作者 xhs@space4",
       regenerate: "重新生成",
       downloadJson: "下载 JSON",
       sensitiveNotice: "下载的文件包含敏感数据，请妥善保存，不要分享给他人。",
@@ -500,6 +501,7 @@
       <div class="screen-body success-body">
         <p class="subtle">${t("successDescription")}</p>
         <p class="file-name">${escapeHtml(state.filename)}</p>
+        ${currentLanguage === "zh" ? `<p class="subtle">${t("followAuthor")}</p>` : ""}
       </div>
       <div class="screen-footer">
         <div class="actions">
