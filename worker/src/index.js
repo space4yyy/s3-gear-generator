@@ -2,8 +2,8 @@ const DEFAULT_F_GEN_URL = "https://nxapi-znca-api.fancy.org.uk/api/znca/f";
 const NXAPI_AUTH_URL = "https://nxapi-auth.fancy.org.uk/api/oauth/token";
 const NXAPI_AUTH_SCOPE = "ca:gf ca:er ca:dr";
 const PROJECT_URL = "https://github.com/space4yyy/s3-gear-generator";
-const NXAPI_CLIENT_VERSION = "d8fAZDPzwimzQ7c6";
-const NXAPI_NSO_VERSION = "3.5.0";
+const NXAPI_CLIENT_VERSION = "2k7EnRvh__pWRtnN";
+const NXAPI_NSO_VERSION = "3.6.0";
 // Coral currently expects the same Android client signature used by the
 // working CLI implementation. It is paired with the pinned NSO app version
 // above and is separate from X-ProductVersion.
